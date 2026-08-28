@@ -27,7 +27,7 @@ public class AuthController {
 
             var token = tokenService.gerarToken(loginRequest.email());
 
-            return ResponseEntity.ok("");
+            return ResponseEntity.ok(token);
         }
         return ResponseEntity.status(HttpURLConnection.HTTP_UNAUTHORIZED).build();
     }
