@@ -64,4 +64,30 @@ public class TokenService {
         return dataFutura.toInstant(ZoneOffset.of("-03:00"));
     }
 
+    public String gerarTokenRecuperacaoSenha(String subject) {
+
+        try {
+
+            Algorithm algorithm = Algorithm.HMAC256(secret);
+
+            String token = JWT.create()
+                    .withIssuer(emissor)
+                    .withSubject(subject)
+                    .withClaim("tipo", "recuperacao-senha")
+                    .withExpiresAt(getDataExpiracaoRecuperacao())
+                    .sign(algorithm);
+
+            return token;
+        }
+        catch (RuntimeException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private Instant getDataExpiracaoRecuperacao() {
+        var dataAtual = LocalDateTime.now();
+        var dataFutura = dataAtual.plusMinutes(15); // token de recuperação expira em 15 minutos
+        return dataFutura.toInstant(ZoneOffset.of("-03:00"));
+    }
+
 }
