@@ -3,19 +3,23 @@ package br.com.senac.rentacar.controllers;
 import br.com.senac.rentacar.DTOs.EsqueciSenhaRequest;
 import br.com.senac.rentacar.DTOs.LoginRequest;
 import br.com.senac.rentacar.DTOs.RedefinirSenhaRequest;
+import br.com.senac.rentacar.respository.UsuarioRepository;
 import br.com.senac.rentacar.services.TokenService;
 import io.swagger.v3.oas.annotations.Operation;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.HttpURLConnection;
 
-
-
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
+
     private final TokenService tokenService;
+
+    @Autowired
+    private UsuarioRepository usuarioRepository;
 
     public AuthController(TokenService tokenService) {
         this.tokenService = tokenService;
@@ -25,21 +29,19 @@ public class AuthController {
     @Operation(description = "Metodo de login", summary = "Autenticação de usuarios")
     public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
 
-        if(loginRequest.email().equals("string") && loginRequest.senha().equals("string")) {
+        if (usuarioRepository.existsUsuarioByEmailAndSenha(loginRequest.email(), loginRequest.senha())) {
 
             var token = tokenService.gerarToken(loginRequest.email());
 
             return ResponseEntity.ok(token);
         }
+
         return ResponseEntity.status(HttpURLConnection.HTTP_UNAUTHORIZED).build();
     }
 
     @PostMapping("/esqueci-senha")
     @Operation(description = "Gera um token de recuperação de senha", summary = "Esqueci minha senha")
     public ResponseEntity<?> esqueciSenha(@RequestBody EsqueciSenhaRequest esqueciSenhaRequest) {
-
-        // Em um cenario real, verificariamos se o email existe no banco
-        // e enviariamos o token por e-mail. Como não há banco aqui, só simulamos.
 
         var token = tokenService.gerarTokenRecuperacaoSenha(esqueciSenhaRequest.email());
 
