@@ -19,10 +19,20 @@ public class UsuarioController {
     private UsuarioRepository usuarioRepository;
 
     @GetMapping
-    @Operation(summary = "Metodo de consulta de lista de usuarios!", description = "Metodo responsavel de todos os usuarios sem filtro!")
     public ResponseEntity<?> listarTodos(){
 
         return  ResponseEntity.ok(usuarioRepository.findAll());
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Usuario> buscarPorId(@PathVariable Long id){
+
+        Usuario usuarioBanco = usuarioRepository.findById(id).orElse(null);
+        if(usuarioBanco!= null ){
+            return  ResponseEntity.ok(usuarioBanco);
+        }
+
+        return  ResponseEntity.notFound().build();
     }
 
     @PostMapping

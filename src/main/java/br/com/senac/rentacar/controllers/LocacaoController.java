@@ -2,6 +2,8 @@ package br.com.senac.rentacar.controllers;
 
 import br.com.senac.rentacar.entities.Locacao;
 import br.com.senac.rentacar.respository.LocacaoRepository;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -9,80 +11,64 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/locacoes")
+@Tag(name = "Locacoes", description = "Grupo de APIs responsavel por controlar a estrutura de locacoes do sistema")
 public class LocacaoController {
 
     @Autowired
     private LocacaoRepository locacaoRepository;
 
-    // LISTAR TODOS
     @GetMapping
-    public ResponseEntity<?> listarTodos() {
+    public ResponseEntity<?> listarTodos(){
+
         return ResponseEntity.ok(locacaoRepository.findAll());
     }
 
-    // BUSCAR POR ID
     @GetMapping("/{id}")
-    public ResponseEntity<?> buscarPorId(@PathVariable Long id) {
+    public ResponseEntity<Locacao> buscarPorId(@PathVariable Long id){
 
-        var locacao = locacaoRepository.findById(id);
-
-        if (locacao.isPresent()) {
-            return ResponseEntity.ok(locacao.get());
+        Locacao locacaoBanco = locacaoRepository.findById(id).orElse(null);
+        if(locacaoBanco != null){
+            return ResponseEntity.ok(locacaoBanco);
         }
 
-        return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                .body("Locação não encontrada");
+        return ResponseEntity.notFound().build();
     }
 
-    // CRIAR
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<Locacao> criar(@RequestBody Locacao locacao) {
+    @Operation(summary = "Metodo de criar de locacoes", description = "Metodo responsavel de criação de novas locacoes!")
+    public ResponseEntity<Locacao> criar(@RequestBody Locacao locacao){
 
         var locacaoBanco = locacaoRepository.save(locacao);
-
         return ResponseEntity.ok(locacaoBanco);
     }
 
-    // ATUALIZAR
     @PutMapping("/{id}")
-    public ResponseEntity<?> atualizar(
-            @PathVariable Long id,
-            @RequestBody Locacao locacao) {
+    public ResponseEntity<Locacao> atualizar(@PathVariable Long id, @RequestBody Locacao locacao) {
+        try {
+            Locacao locacaoBanco = locacaoRepository.findById(id).orElse(null);
 
-        var locacaoBanco = locacaoRepository.findById(id);
+            if (locacaoBanco != null) {
+                locacaoBanco.setDataInicio(locacao.getDataInicio());
+                locacaoBanco.setDataFim(locacao.getDataFim());
+                locacaoBanco.setValorTotal(locacao.getValorTotal());
+                locacaoBanco.setCliente(locacao.getCliente());
+                locacaoBanco.setVeiculo(locacao.getVeiculo());
+                locacaoRepository.save(locacaoBanco);
+                return ResponseEntity.ok().build();
+            }
 
-        if (locacaoBanco.isPresent()) {
+            return ResponseEntity.notFound().build();
 
-            Locacao locacaoExistente = locacaoBanco.get();
-
-            locacaoExistente.setDataInicio(locacao.getDataInicio());
-            locacaoExistente.setDataFim(locacao.getDataFim());
-            locacaoExistente.setValorTotal(locacao.getValorTotal());
-            locacaoExistente.setCliente(locacao.getCliente());
-            locacaoExistente.setVeiculo(locacao.getVeiculo());
-
-            return ResponseEntity.ok(
-                    locacaoRepository.save(locacaoExistente)
-            );
+        } catch (RuntimeException e) {
+            throw new RuntimeException(e);
         }
-
-        return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                .body("Locação não encontrada");
     }
 
-    // DELETAR
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deletar(@PathVariable Long id) {
-
-        if (locacaoRepository.existsById(id)) {
-
-            locacaoRepository.deleteById(id);
-
-            return ResponseEntity.ok("Locação deletada com sucesso");
-        }
-
-        return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                .body("Locação não encontrada");
+    public ResponseEntity<Void> excluir(@PathVariable Long id) {
+        locacaoRepository.deleteById(id);
+        return ResponseEntity.ok().build();
     }
+
 }
