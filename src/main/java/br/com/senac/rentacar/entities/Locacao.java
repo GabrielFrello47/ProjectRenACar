@@ -21,11 +21,7 @@ public class Locacao {
 
     public Double valorTotal;
 
-    @ManyToOne
-    @JoinColumn(name = "cliente_id")
-    public Cliente cliente;
+    public String cliente;
 
-    @ManyToOne
-    @JoinColumn(name = "veiculo_id")
-    public Veiculo veiculo;
+    public String veiculo;
 }
