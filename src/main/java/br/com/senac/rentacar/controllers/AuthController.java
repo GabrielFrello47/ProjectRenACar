@@ -2,6 +2,7 @@ package br.com.senac.rentacar.controllers;
 
 import br.com.senac.rentacar.DTOs.EsqueciSenhaRequest;
 import br.com.senac.rentacar.DTOs.LoginRequest;
+import br.com.senac.rentacar.DTOs.LoginResponse;
 import br.com.senac.rentacar.DTOs.RedefinirSenhaRequest;
 import br.com.senac.rentacar.respository.UsuarioRepository;
 import br.com.senac.rentacar.services.TokenService;
@@ -33,7 +34,7 @@ public class AuthController {
 
             var token = tokenService.gerarToken(loginRequest.email());
 
-            return ResponseEntity.ok(token);
+            return ResponseEntity.ok(new LoginResponse(token));
         }
 
         return ResponseEntity.status(HttpURLConnection.HTTP_UNAUTHORIZED).build();

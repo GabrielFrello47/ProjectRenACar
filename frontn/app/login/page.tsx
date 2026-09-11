@@ -1,12 +1,33 @@
 'use client'
 
 import { useRouter } from "next/navigation";
+import axios from "axios";
+import { LoginResponse } from "../types/auth";
 
 export default function Login(){
     const router = useRouter();
 
-    const handleLogin = async(formData:FormData) =>{
-        router.push("/home")
+    const handleLogin = async (formData: FormData) => {
+        const emailTela = formData.get("email")?.toString() ?? "";
+        const senhaTela = formData.get("senha")?.toString() ?? "";
+
+        try {
+            const loginResposta = await axios.post<LoginResponse>(
+                "http://localhost:8080/auth/login",
+                {
+                    email: emailTela,
+                    senha: senhaTela,
+                }
+            );
+
+            if (loginResposta.status === 200) {
+                router.push("/home");
+                return;
+            }
+        } catch (err) {
+            console.error(err);
+            alert("Login ou senha inválidos");
+        }
     }
 
     return(
@@ -28,8 +49,7 @@ export default function Login(){
                             type="email"
                             placeholder="seu@email.com"
                             className="w-full px-4 py-2.5 bg-[#141312] border border-[#3A3733] rounded-lg text-white placeholder-[#635E57] focus:outline-none focus:ring-2 focus:ring-[#E8590C] focus:border-transparent transition-all"
-                        >
-                        </input>
+                        />
                     </div>
                     <div className="space-y-2">
                         <label className="block text-sm font-medium text-[#C9C4BC]">
@@ -40,8 +60,7 @@ export default function Login(){
                             type="password"
                             placeholder="••••••••"
                             className="w-full px-4 py-2.5 bg-[#141312] border border-[#3A3733] rounded-lg text-white placeholder-[#635E57] focus:outline-none focus:ring-2 focus:ring-[#E8590C] focus:border-transparent transition-all"
-                        >
-                        </input>
+                        />
                     </div>
                     <button 
                         type="submit"
