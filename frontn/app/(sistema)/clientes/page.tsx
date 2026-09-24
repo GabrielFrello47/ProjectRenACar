@@ -63,6 +63,9 @@ export default function Clientes(){
                                     <th className="px-6 py-3.5 text-xs font-semibold text-slate-600 uppercase tracking-wider">
                                         E-mail
                                     </th>
+                                    <th className="px-6 py-3.5 text-xs font-semibold text-slate-600 uppercase tracking-wider">
+                                        Ações
+                                    </th>
                                 </tr>
                             </thead>
                             <tbody className="divide-y divide-slate-200">
@@ -83,13 +86,21 @@ export default function Clientes(){
                                     <td className="px-6 py-4 text-sm font-medium text-slate-800">
                                         {cliente.email}
                                     </td>
+                                    <td className="px-6 py-4 text-sm font-medium text-slate-800">
+                                        <Link
+                                            href={`/clientes/${cliente.id}/editar`}
+                                            className="inline-flex items-center justify-center px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-medium rounded-md transition-colors duration-150"
+                                        >
+                                            Editar
+                                        </Link>
+                                    </td>
                                 </tr>
                                 ))}
 
                                 { clientes.length === 0 &&
                                 (
                                     <tr>
-                                        <td colSpan={5} className="px-6 py-12 text-center text-slate-800 italic" >
+                                        <td colSpan={6} className="px-6 py-12 text-center text-slate-800 italic" >
                                             Nenhum cliente encontrado!
                                         </td>
                                     </tr>
