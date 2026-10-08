@@ -1,6 +1,6 @@
 package br.com.senac.rentacar.configuration;
 
-import br.com.senac.rentacar.services.TokenService;
+import br.com.senac.rentacar.application.services.TokenService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

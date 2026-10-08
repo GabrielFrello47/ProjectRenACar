@@ -1,8 +1,8 @@
-package br.com.senac.rentacar.respository;
+package br.com.senac.rentacar.domain.respository;
 
 
-import br.com.senac.rentacar.entities.EnumStatusUsuario;
-import br.com.senac.rentacar.entities.Usuario;
+import br.com.senac.rentacar.domain.entities.EnumStatusUsuario;
+import br.com.senac.rentacar.domain.entities.Usuario;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

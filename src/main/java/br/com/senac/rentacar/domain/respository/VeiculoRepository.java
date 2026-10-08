@@ -1,5 +1,5 @@
-package br.com.senac.rentacar.respository;
-import br.com.senac.rentacar.entities.Veiculo;
+package br.com.senac.rentacar.domain.respository;
+import br.com.senac.rentacar.domain.entities.Veiculo;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

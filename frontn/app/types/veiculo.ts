@@ -12,3 +12,7 @@ export class Veiculo{
         ){}
     
     }
+
+    export interface VeiculoFormProps {
+        VeiculoExistente?:Veiculo
+    }

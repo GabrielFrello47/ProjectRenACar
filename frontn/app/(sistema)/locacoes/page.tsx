@@ -18,12 +18,26 @@ export default function Locacoes(){
         try {
             const dados = await axios.get<Locacao[]>("http://localhost:8080/locacoes");
 
-            setLocacoes( dados.data);
+            setLocacoes(dados.data);
 
         } catch (error) {
             alert("Erro ao carregar dados!")
         }
        
+
+    }
+
+    const handleDeletar = async (id: number) => {
+
+        const confirmar = confirm("Tem certeza que deseja excluir esta locacao?");
+        if (!confirmar) return;
+
+        try {
+            await axios.delete(`http://localhost:8080/locacoes/${id}`);
+            await carregarDados();
+        } catch (error) {
+            alert("Erro ao excluir locacao!");
+        }
 
     }
     
@@ -66,6 +80,9 @@ export default function Locacoes(){
                                     <th className="px-6 py-3.5 text-xs font-semibold text-slate-600 uppercase tracking-wider">
                                         Veículo
                                     </th>
+                                    <th className="px-6 py-3.5 text-xs font-semibold text-slate-600 uppercase tracking-wider">
+                                        Ações
+                                    </th>
                                 </tr>
                             </thead>
                             <tbody className="divide-y divide-slate-200">
@@ -75,19 +92,33 @@ export default function Locacoes(){
                                         {locacao.id}
                                     </td>
                                     <td className="px-6 py-4 text-sm font-medium text-slate-800">
-                                        {locacao.dataInicio}
+                                        {locacao.dataInicio.toString()}
                                     </td>
                                     <td className="px-6 py-4 text-sm font-medium text-slate-800">
-                                        {locacao.dataFim}
+                                        {locacao.dataFim.toString()}
                                     </td>
                                     <td className="px-6 py-4 text-sm font-medium text-slate-800">
                                         {locacao.valorTotal}
                                     </td>
                                     <td className="px-6 py-4 text-sm font-medium text-slate-800">
-                                        {locacao.cliente?.nome}
+                                        {locacao.cliente}
                                     </td>
                                     <td className="px-6 py-4 text-sm font-medium text-slate-800">
-                                        {locacao.veiculo?.modelo}
+                                        {locacao.veiculo ? `${locacao.veiculo} ${locacao.veiculo}` : ""}
+                                    </td>
+                                    <td className="px-6 py-4 text-sm font-medium text-slate-800 space-x-2">
+                                        <Link
+                                            href={`/locacoes/${locacao.id}/editar`}
+                                            className="inline-flex items-center justify-center px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-medium rounded-md transition-colors duration-150"
+                                        >
+                                            Editar
+                                        </Link>
+                                        <button
+                                            onClick={() => handleDeletar(locacao.id!)}
+                                            className="inline-flex items-center justify-center px-3 py-1.5 bg-red-50 hover:bg-red-100 text-red-600 text-xs font-medium rounded-md transition-colors duration-150"
+                                        >
+                                            Excluir
+                                        </button>
                                     </td>
                                 </tr>
                                 ))}
@@ -95,7 +126,7 @@ export default function Locacoes(){
                                 { locacoes.length === 0 &&
                                 (
                                     <tr>
-                                        <td colSpan={6} className="px-6 py-12 text-center text-slate-800 italic" >
+                                        <td colSpan={7} className="px-6 py-12 text-center text-slate-800 italic" >
                                             Nenhuma locacao encontrada!
                                         </td>
                                     </tr>

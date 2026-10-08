@@ -1,8 +1,8 @@
-package br.com.senac.rentacar.controllers;
+package br.com.senac.rentacar.presentation;
 
-import br.com.senac.rentacar.DTOs.AtualizarStatusRequest;
-import br.com.senac.rentacar.entities.Usuario;
-import br.com.senac.rentacar.respository.UsuarioRepository;
+import br.com.senac.rentacar.application.DTOs.AtualizarStatusRequest;
+import br.com.senac.rentacar.domain.entities.Usuario;
+import br.com.senac.rentacar.domain.respository.UsuarioRepository;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;

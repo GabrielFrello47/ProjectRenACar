@@ -1,9 +1,9 @@
-"use client";
-
+"use client"
 import { Usuario } from "@/app/types/usuario";
 import axios from "axios";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+
 
 export default function Usuarios(){
 
@@ -26,10 +26,52 @@ export default function Usuarios(){
        
 
     }
+
+    const handleDeletarUsuario = async(usuario:Usuario) =>{
+
+        var dadosRetorno = await  
+        axios.delete('http://localhost:8080/usuarios/'+usuario.id+'/excluir');
+
+        if(dadosRetorno.status==200){
+            alert("Excluido com sucesso!");
+        }else{
+            alert(dadosRetorno.data);
+
+            return;
+        }
+
+        carregarDados();
+
+    }
+
+    const handleAlterarStatusUsuario = async(usuario:Usuario) =>{
+
+
+        var novoStatus = {};
+        if(usuario.status ==="ATIVO"){
+            novoStatus = {status:"BLOQUEADO"}
+        }else{
+            novoStatus = {status:"ATIVO"}
+        }
+
+        var dadosRetorno = await  
+        axios.patch('http://localhost:8080/usuarios/'+usuario.id+'/status',novoStatus);
+
+        if(dadosRetorno.status==200){
+            alert("Atulizado status com sucesso!");
+        }else{
+            alert(dadosRetorno.data);
+
+            return;
+        }
+
+        carregarDados();
+
+    }
     
 
     return (
-        <div className="min-h-screen w-full bg-slate-50 p-6 md:p-8 font-sans">
+        <div className="w-full bg-slate-50 p-6 md:p-8 font-sans">
             <div className="w-full flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
                 <h1 className="text-2xl md:text-3xl font-bold text-slate-900 tracking-tight">
                     Gestao de usuarios
@@ -87,12 +129,30 @@ export default function Usuarios(){
                                         {usuario.status}
                                     </td>
                                     <td className="px-6 py-4 text-sm font-medium text-slate-800">
-                                        <Link
-                                            href={`/usuarios/${usuario.id}/editar`}
-                                            className="inline-flex items-center justify-center px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-medium rounded-md transition-colors duration-150"
-                                        >
-                                            Editar
-                                        </Link>
+                                        <div className="flex items-center gap-2">
+                                            <Link
+                                                href={`/usuarios/${usuario.id}/editar`}
+                                                className="inline-flex items-center justify-center px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-medium rounded-md transition-colors duration-150"
+                                            >
+                                                Editar
+                                            </Link>
+                                            <button
+                                                onClick={()=> handleDeletarUsuario(usuario)}
+                                                className="inline-flex items-center justify-center px-3 py-1.5 bg-red-50 hover:bg-red-100 text-red-600 hover:text-red-700 text-xs font-medium rounded-md transition-colors duration-150"
+                                            >
+                                                Deletar
+                                            </button>
+                                            <button
+                                                onClick={()=> handleAlterarStatusUsuario(usuario)}
+                                                className={`inline-flex items-center justify-center px-3 py-1.5 text-xs font-medium rounded-md transition-colors duration-150 ${
+                                                    usuario.status === 'BLOQUEADO'
+                                                    ? 'bg-orange-50 hover:bg-orange-100 text-orange-600 hover:text-orange-700'
+                                                    : 'bg-green-50 hover:bg-green-100 text-green-600 hover:text-green-700'
+                                                }`}
+                                            >
+                                                {usuario.status}
+                                            </button>
+                                        </div>
                                     </td>
                                 </tr>
                                 ))}

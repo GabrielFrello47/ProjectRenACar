@@ -1,7 +1,7 @@
-package br.com.senac.rentacar.controllers;
+package br.com.senac.rentacar.presentation;
 
-import br.com.senac.rentacar.entities.Cliente;
-import br.com.senac.rentacar.respository.ClienteRepository;
+import br.com.senac.rentacar.domain.entities.Cliente;
+import br.com.senac.rentacar.domain.respository.ClienteRepository;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;

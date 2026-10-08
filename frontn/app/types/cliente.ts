@@ -9,5 +9,9 @@ export class Cliente{
         public email:string,
     
         ){}
-    
     }
+        export interface ClienteFormProps{
+            ClienteExistente?:Cliente
+        }
+    
+    

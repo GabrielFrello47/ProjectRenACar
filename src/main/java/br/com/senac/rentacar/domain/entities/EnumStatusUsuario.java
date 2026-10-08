@@ -1,4 +1,4 @@
-package br.com.senac.rentacar.entities;
+package br.com.senac.rentacar.domain.entities;
 
 public enum EnumStatusUsuario {
     ATIVO,

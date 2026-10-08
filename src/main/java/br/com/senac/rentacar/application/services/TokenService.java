@@ -1,4 +1,4 @@
-package br.com.senac.rentacar.services;
+package br.com.senac.rentacar.application.services;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
