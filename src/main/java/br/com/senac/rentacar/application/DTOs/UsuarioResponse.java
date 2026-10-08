@@ -1,7 +1,5 @@
 package br.com.senac.rentacar.application.DTOs;
 
-
-
 import br.com.senac.rentacar.domain.entities.EnumStatusUsuario;
 import br.com.senac.rentacar.domain.entities.Usuario;
 
