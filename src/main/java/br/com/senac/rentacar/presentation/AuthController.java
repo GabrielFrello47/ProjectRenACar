@@ -4,7 +4,6 @@ import br.com.senac.rentacar.application.DTOs.EsqueciSenhaRequest;
 import br.com.senac.rentacar.application.DTOs.LoginRequest;
 import br.com.senac.rentacar.application.DTOs.LoginResponse;
 import br.com.senac.rentacar.application.DTOs.RedefinirSenhaRequest;
-import br.com.senac.rentacar.application.services.UsuarioService;
 import br.com.senac.rentacar.domain.respository.UsuarioRepository;
 import br.com.senac.rentacar.application.services.TokenService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -22,7 +21,7 @@ import java.net.HttpURLConnection;
     public class AuthController {
 
         @Autowired
-        private UsuarioService usuarioService;
+        private com.example.aula20263.application.services.UsuarioService usuarioService;
 
         @PostMapping("/login")
         @Operation(summary = "Login", description = "Método responsavel por efetuar o login do usuário!")
